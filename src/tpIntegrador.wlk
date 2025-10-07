@@ -14,6 +14,10 @@ class GuitarraFender {
     }
 
     method esValioso() { return true }
+
+    method familia() { return familia }
+
+    method esCopado() { return false }
 }
 
 class TrompetaJupiter {
@@ -38,6 +42,10 @@ class TrompetaJupiter {
     }
 
     method esValioso() { return false }
+
+    method familia() { return familia }
+
+    method esCopado() { return sordina }
 }
 
 class PianoBechstein {
@@ -60,6 +68,10 @@ class PianoBechstein {
     method esValioso() { return self.afinado() }
 
     method revisar(fecha) { ultimaRevision = fecha }
+
+    method familia() { return familia }
+
+    method esCopado() { return anchoHabitacion > 6 || largoHabitacion > 6 }
 }
 
 class ViolinStagg {
@@ -82,6 +94,10 @@ class ViolinStagg {
     }
 
     method hacerTremolo() { tremolo += 1 }
+
+    method familia() { return familia }
+
+    method esCopado() { return false }
 }
 
 // ------------------------------------------------------------------------------------------------------------------------------------------
@@ -146,4 +162,38 @@ class AsociacioMusical {
 
 // ------------------------------------------------------------------------------------------------------------------------------------------
 // PUNTO 3: Musicos y orquesta
+
+class Musico {
+    const familiaPreferida
+    const instrumento
+    const nombre
+
+    method esExperto() {
+        return instrumento.familia() == familiaPreferida
+    }
+
+    method esFeliz() {
+        return instrumento.esCopado()
+    }
+
+    method nombre() { return nombre }
+}
+
+class Orquesta {
+    const musicos = []
+    const cantidadMaxima
+
+    method agregarMusico(musico) {
+        if (musicos.size() < cantidadMaxima) {
+            if (!(musicos.any({ m => m.nombre() == musico.nombre() }))) {
+                musicos.add(musico)
+            }
+        }
+    }
+
+    method bienConformada() {
+        return musicos.all({ m => m.esFeliz() })
+    }
+}
+
 
