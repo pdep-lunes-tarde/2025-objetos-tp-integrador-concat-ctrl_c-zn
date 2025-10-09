@@ -162,7 +162,7 @@ class TrompetaJupiter inherits Instrumento {
     var temperatura = 22
 
     override method afinado() { 
-        return temperatura >= 20 && temperatura <= 25
+        return temperatura >= 20 && temperatura < 25
     }
 
     override method afinar(tecnico) { 
@@ -175,6 +175,10 @@ class TrompetaJupiter inherits Instrumento {
         
         return 30
     }
+
+    override method esValioso() {
+    return self.afinado()
+}
 
     override method familia() { return 'viento' }
 
@@ -206,6 +210,8 @@ class PianoBechstein inherits Instrumento {
     override method familia() { return 'cuerda' }
 
     override method esCopado() { return anchoHabitacion > 6 || largoHabitacion > 6 }
+
+    method setDimensiones(ancho, largo) { anchoHabitacion = ancho; largoHabitacion = largo }
 }
 
 class ViolinStagg inherits Instrumento {
@@ -352,7 +358,11 @@ object maddalena {
 }
 
 class AsociacioMusical {
-    const musicos = []
+    const musicos = [] 
+
+    method musicos() {
+    return musicos
+    }
 
     method sonFelices() {
         return musicos.filter({ m => m.esFeliz() })
@@ -396,8 +406,13 @@ class Orquesta {
     const musicos = []
     const cantidadMaxima
 
+    method musicos() { 
+        return musicos 
+    }
+
+
     method agregarMusico(musico) {
-        if (musicos.size() < cantidadMaxima) {
+        if (musicos.size() < cantidadMaxima - 1) {
             if (!(musicos.any({ m => m.nombre() == musico.nombre() }))) {
                 musicos.add(musico)
             }

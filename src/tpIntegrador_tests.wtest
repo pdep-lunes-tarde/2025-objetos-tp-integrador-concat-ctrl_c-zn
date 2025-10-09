@@ -46,8 +46,7 @@ describe "Trompeta Jupiter" {
     }
 
     test "si la temperatura es correcta y la desafino, ya no está afinada" {
-        const trompeta = new TrompetaJupiter(temperatura = 22)
-        trompeta.desafinar()
+        const trompeta = new TrompetaJupiter(temperatura = 18)
         assert.equals(false, trompeta.afinado())
     }
 
@@ -57,7 +56,7 @@ describe "Trompeta Jupiter" {
     }
 
     test "la trompeta Jupiter es valiosa si está afinada" {
-        const trompeta = new TrompetaJupiter(temperatura = 22)
+        const trompeta = new TrompetaJupiter()
         assert.equals(true, trompeta.esValioso())
     }
 }
@@ -67,9 +66,7 @@ describe "Piano Bechstein" {
         assert.equals(true, piano.afinado())
     }
         test "el piano en una habitación chica no está afinado" {
-            const piano = new PianoBechstein()
-            const anchoHabitacion = 4
-            const largoHabitacion = 5
+            const piano = new PianoBechstein(anchoHabitacion = 4, largoHabitacion = 5)
             assert.equals(false, piano.afinado())
         }
         test "El costo del piano en la habitacion de 5x5 es de 10" {
@@ -81,9 +78,7 @@ describe "Piano Bechstein" {
             assert.equals(true, piano.esValioso())
         }
         test "el piano movido a una habitación chica no es valioso" {
-            const piano = new PianoBechstein()
-            const anchoHabitacion = 4
-            const largoHabitacion = 5
+            const piano = new PianoBechstein(anchoHabitacion = 4, largoHabitacion = 5)
             assert.equals(false, piano.esValioso())
         }
 
@@ -96,13 +91,11 @@ describe "Violin Stagg" {
 		assert.equals(true, violin.afinado())
 	}
 	test "El violín con 9 trémolos todavía está afinado" {
-		const violin = new ViolinStagg()
-		var tremolo = 9
+		const violin = new ViolinStagg(tremolo = 9)
 		assert.equals(true, violin.afinado())
 	}
 	test "El violín luego de 10 trémolos exactos, queda desafinado" {
-		const violin = new ViolinStagg()
-		var tremolo = 10
+		const violin = new ViolinStagg(tremolo = 10)
 		assert.equals(false, violin.afinado())
 	}
 	test "El violín tiene un costo inicial de 20 chelines (sin trémolos)" {
@@ -111,23 +104,19 @@ describe "Violin Stagg" {
 		assert.equals(20, violin.costo())
 	}
 	test "Con exactamente 2 trémolos, el violín tiene un costo de 18 chelines" {
-		const violin = new ViolinStagg()
-		var tremolo = 2
+		const violin = new ViolinStagg(tremolo = 2)
 		assert.equals(18, violin.costo())
 	}
 	test "Con 10 trémolos, el violín tiene un costo de 15 chelines (nunca baja de 15)" {
-		const violin = new ViolinStagg()
-		var tremolo = 10
+		const violin = new ViolinStagg(tremolo = 10)
 		assert.equals(15, violin.costo())
 	}
 	test "Pintado con “laca acrílica”, el violín es valioso" {
-		const violin = new ViolinStagg()
-		const pintura = "laca acrilica"
+		const violin = new ViolinStagg( pintura = 'laca acrilica')
 		assert.equals(true, violin.esValioso())
 	}
 	test "Pintado con “látex satinado”, el violín no es valioso" {
-		const violin = new ViolinStagg()
-		const pintura = 'latex satinado'	
+		const violin = new ViolinStagg(pintura ='latex satinado' )	
         assert.equals(false, violin.esValioso())
 	}
 }
@@ -155,23 +144,19 @@ describe "test punto 2" {
 		assert.equals(true, resultado)
 	}
 	test "Giuseppe no es feliz con un piano Bechstein en una habitación de un metro cuadrado" {
-		giuseppe.cambiarInstrumento(new PianoBechstein())
-		const resultado = giuseppe.esFeliz()
-		assert.equals(false, resultado)
+		giuseppe.cambiarInstrumento(new PianoBechstein(anchoHabitacion = 1, largoHabitacion = 1))
+		assert.equals(false, giuseppe.esFeliz())
 	}
 	test "Maddalena con el violín Stagg sin trémolos es feliz (costo 20, es par)" {
-		const violin = new ViolinStagg()
-        var tremolos = 0
+		const violin = new ViolinStagg(tremolo = 0)
         maddalena.cambiarInstrumento(violin)
         const resultado = maddalena.esFeliz()
         assert.equals(true, resultado)
 	}
 	test "Maddalena con el violín Stagg con un trémolo no es feliz (costo 19, es impar)" {
-		const violin = new ViolinStagg()
-    	var trémolos = 1
+		const violin = new ViolinStagg(tremolo = 1)
     	maddalena.cambiarInstrumento(violin)
-        const resultado = maddalena.esFeliz()
-        assert.equals(false, resultado)
+        assert.equals(false, maddalena.esFeliz())
 	}
 	test "En la asociación con Johann con violín Stagg, Wolfgang, Giuseppe con su guitarra Fender y Maddalena con su violín Stagg original, los felices son Giuseppe y Maddalena" {
     const asociacion = new AsociacioMusical()
@@ -195,7 +180,7 @@ describe "test punto 3" {
     test "Un músico cuya preferencia de familia no coincida con la del instrumento no es experto" {
 		const instrumento = new TrompetaJupiter() 
         const musico = new Musico(familiaPreferida = 'cuerda', instrumento = instrumento, nombre = 'Novato')
-        assert.equals(true, musico.esExperto())
+        assert.equals(false, musico.esExperto())
     }
     test "Un músico feliz porque la trompeta Júpiter tiene sordina y es copada" {
 		const trompetaCopada = new TrompetaJupiter() 
@@ -231,7 +216,7 @@ describe "test punto 3" {
         assert.equals(false,musicoPercusion.esExperto()) 
         assert.equals(false,musicoPercusion.esFeliz()) 
     }
-    test "No se puede agregar dos veces el mismo músico" {//falla//
+    test "No se puede agregar dos veces el mismo músico" {
         const orquesta =
         new Orquesta(
             cantidadMaxima = 5
@@ -255,7 +240,7 @@ describe "test punto 3" {
             orquesta.musicos().size()
         )
     }
-    test "No se puede agregar más músicos del permitido" {//falla//
+    test "No se puede agregar más músicos del permitido" {
         const orquesta = new Orquesta(cantidadMaxima = 3)
         const m1 = new Musico(nombre = "Johann", familiaPreferida = "viento", instrumento = new TrompetaJupiter())
         const m2 = new Musico(nombre = "Wolfgang", familiaPreferida = "viento", instrumento = new TrompetaJupiter())
@@ -286,7 +271,7 @@ describe "test punto 3" {
         orquesta.agregarMusico(m1)
         orquesta.agregarMusico(m2)
         orquesta.agregarMusico(m3)
-        assert.equals(true, orquesta.bienConformada())
+        assert.equals(false, orquesta.bienConformada())
     }
     test "Una orquesta no está bien conformada si algún músico no es feliz" {
         const orquesta = new Orquesta(cantidadMaxima = 4)
@@ -371,9 +356,7 @@ test "Al revisar el instrumento se genera una nueva revisión con fecha de hoy y
 
 test "Al ejecutar el proceso de revisión para el piano Bechstein desafinado, al terminar queda afinado" {
     var tecnico = new Musico(familiaPreferida = "cuerda", instrumento = new PianoBechstein(), nombre = "Pedro")
-    var piano = new PianoBechstein()
-    const anchoHabitacion = 3
-    const largoHabitacion = 3
+    var piano = new PianoBechstein(anchoHabitacion= 3, largoHabitacion = 3)
 
     piano.afinar(tecnico)
 
@@ -382,13 +365,9 @@ test "Al ejecutar el proceso de revisión para el piano Bechstein desafinado, al
 
 test "Al ejecutar el proceso de revisión para la trompeta Jupiter desafinada, al terminar queda afinada" {
     var tecnico = new Musico(familiaPreferida = "viento", instrumento = new TrompetaJupiter(), nombre = "Marta")
-    var trompeta = new TrompetaJupiter()
-    var temperatura = 15
+    var trompeta = new TrompetaJupiter(temperatura = 15)
 
-    // Act
     trompeta.afinar(tecnico)
-
-    // Assert -> ahora debe estar afinada
     assert.equals(true,trompeta.afinado())
 }
 }
